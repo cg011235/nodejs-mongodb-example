@@ -5,40 +5,25 @@
 const assert = require('assert');
 
 // Inserts new document in DB - C
-exports.insertDocument = (db, document, collection, callback) => {
+exports.insertDocument = (db, document, collection) => {
     const coll = db.collection(collection);
-    coll.insert(document, (err, result) => {
-        assert.equal(err, null);
-        console.log("Inserted "+ result.result.n + " documents into the collection " + collection);
-        callback(result);   // return result to caller
-    });
+    return coll.insert(document);
 };
 
 // Update document with new record - U
-exports.updateDocument = (db, document, update, collection, callback) => {
+exports.updateDocument = (db, document, update, collection) => {
     const coll = db.collection(collection);
-    coll.updateOne(document, { $set: update }, null, (err, result) => {
-        assert.equal(err, null);
-        console.log("Updated the document with ", update);
-        callback(result);
-    });
+   return coll.updateOne(document, { $set: update }, null);
 };
 
 // Find and read document - R
-exports.findDocuments = (db, collection, callback) => {
+exports.findDocuments = (db, collection) => {
     const coll = db.collection(collection);
-    coll.find({}).toArray((err, docs) => {
-        assert.equal(err, null);
-        callback(docs);
-    });
+    return coll.find({}).toArray();
 };
 
 // Delete specific document from mongoDB - D
-exports.removeDocument = (db, document, collection, callback) => {
-    const call = db.collection(collection);
-    call.deleteOne(document, (err, result) => {
-        assert.equal(err, null);
-        console.log("Removed " + result.result.n + " document from the collection " + collection);
-        callback(result);   // return result to caller);
-    });
+exports.removeDocument = (db, document, collection) => {
+    const coll = db.collection(collection);
+    return coll.deleteOne(document)
 };
